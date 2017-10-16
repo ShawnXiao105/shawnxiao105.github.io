@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="description" content="Calcite Maps Demo - ArcGIS">
   <meta name="author" content="">
-  <!-- <link rel="icon" href="https://www.esri.com/favicon.ico"> -->
+  <link rel="icon" href="https://www.hk.chinamobile.com/favicon.ico?v=2">
   <title>CMHK</title>
 
 
@@ -17,9 +17,10 @@
   <link rel="stylesheet" href="./dist/css/calcite-maps-arcgis-3.x.min-v0.4.css"-->
 
   <!-- ArcGIS JS 3.x -->
-  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/themes/calcite/dijit/calcite.css">
-  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/themes/calcite/esri/esri.css">
-  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/dijit/LayerList/css/LayerList.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/themes/calcite/dijit/calcite.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/themes/calcite/esri/esri.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/dijit/LayerList/css/LayerList.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/claro/claro.css">
 
 
   <style>
@@ -28,6 +29,17 @@
       padding: 0;
       height: 100%;
     }
+    .bottom-panel {
+      bottom: 60px !important;
+      top: auto  !important;
+    }
+    #alarmsDiv {
+      width:100%;
+      height:100%;
+      margin:0;
+      padding:0;
+    }
+    .calcite-panels.calcite-bg-custom{background-color:#fff;opacity:0.4;}
   </style>
 </head>
 
@@ -48,8 +60,11 @@
         </div>
       </a>
       <ul class="dropdown-menu">
-        <li><a role="menuitem" tabindex="0" data-target="#modalSplash" data-toggle="modal" aria-haspopup="true">About</a><a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#modalSplash" data-toggle="modal" aria-haspopup="true">About</a></li>
         <li><a role="menuitem" tabindex="0" data-target="#panelLayers" aria-haspopup="true"><span class="glyphicon glyphicon glyphicon-th-list"></span> Layers</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelLegend" aria-haspopup="true"><span class="glyphicon glyphicon-education"></span> Legend</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelAlarms" aria-haspopup="true"><span class="glyphicon glyphicon-warning-sign"></span> Alarms</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelInfo" aria-haspopup="true"><span class="glyphicon glyphicon-info-sign"></span> Info</a></li>
         <li><a class="visible-xs" role="button" data-target="#panelSearch" aria-haspopup="true"><span class="glyphicon glyphicon-search"></span> Search</a></li>
         <li><a role="menuitem" tabindex="0" data-target="#panelBasemaps" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span> Basemaps</a></li>
         <li><a role="menuitem" tabindex="0" id="calciteToggleNavbar" aria-haspopup="true"><span class="glyphicon glyphicon-fullscreen"></span> Full Map</a></li>
@@ -59,29 +74,17 @@
     <div class="calcite-title calcite-overflow-hidden">
       <span class="calcite-title-main">CMHK</span>
       <span class="calcite-title-divider hidden-xs"></span>
-      <span class="calcite-title-sub hidden-xs">Site Monitor App</span> 
+      <span class="calcite-title-sub hidden-xs">4G Cell Performance Monitoring</span> 
     </div>
      <!-- Nav -->
     <ul class="calcite-nav nav navbar-nav">                    
-      <li><div class="calcite-navbar-search calcite-search-expander"><div id="searchNavDiv"></div></div></li>
+      <li><div class="calcite-navbar-search hidden-xs"><div id="searchNavDiv"></div></div></li>
     </ul>
  
   </nav><!--/.navbar -->
 
  
-<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Modal header</h3>
-  </div>
-  <div class="modal-body">
-    <p>One fine body…</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
-</div>
+
 
 
   <!-- Modal Window -->
@@ -117,12 +120,59 @@
 
   <div class="calcite-map">
     <div id="mapViewDiv" class="calcite-map-absolute"></div>
+    
 
+    <div class="bottom-panel  calcite-panels calcite-panels-right calcite-bg-custom   calcite-text-dark panel-group" role="tablist" aria-multiselectable="true">
+    <!-- Legend Panel -->
+  
+    <div id="panelLegend" class="panel ">
+      
+      <div id="collapseLegend" class="panel" role="tabpanel" aria-labelledby="headingInfo">
+        <div id="legendDiv" class="panel-body" style="width: 200px">
+        </div>
+      </div>
+    </div>
   </div><!-- /.container -->
+
+<!-- Panel -->
+
+ <div  class="bottom-panel calcite-panels calcite-panels-left calcite-bg-light calcite-text-dark panel-group " role="tablist" aria-multiselectable="true">    
+    <!-- Alarm Panel -->  
+    <div id="panelAlarms" class="panel in">
+      <div id="headingInfo" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseAlarms"  aria-expanded="true" aria-controls="collapseInfo"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span><span class="panel-label">Alarms</span></a> 
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelAlarms"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+        </div>
+      </div>
+      <div id="collapseAlarms" class="panel-collapse in" role="tabpanel" aria-labelledby="headingInfo">
+        <div id="alarmsDiv"  class="panel-body">
+          <p>This Part is Alarm</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Panel -->
 
-  <div class="calcite-panels calcite-panels-right calcite-bg-light calcite-text-dark panel-group" role="tablist" aria-multiselectable="true">
+  <div class="calcite-panels calcite-panels-left calcite-bg-light calcite-text-dark panel-group" role="tablist" aria-multiselectable="true">
+
+    <!-- Cell or Site or Alarm Info Panel-->
+
+     <div id="panelInfo" class="panel collapse">
+      <div id="headingInfo" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseInfo"  aria-expanded="true" aria-controls="collapseInfo"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="panel-label">Info</span></a> 
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelInfo"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+        </div>
+      </div>
+      <div id="collapseInfo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInfo">
+        <div id="InfoDiv" class="panel-body">
+          
+          
+        </div>
+      </div>
+    </div>
           
     <!-- Layers Info Panel -->
   
@@ -140,6 +190,9 @@
         </div>
       </div>
     </div>
+
+
+    
   
     <!-- Search Panel -->
 
