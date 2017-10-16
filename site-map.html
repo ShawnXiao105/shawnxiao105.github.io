@@ -17,9 +17,9 @@
   <link rel="stylesheet" href="./dist/css/calcite-maps-arcgis-3.x.min-v0.4.css"-->
 
   <!-- ArcGIS JS 3.x -->
-  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/themes/calcite/dijit/calcite.css">
-  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/themes/calcite/esri/esri.css">
-  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/dijit/LayerList/css/LayerList.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/themes/calcite/dijit/calcite.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/themes/calcite/esri/esri.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/dijit/LayerList/css/LayerList.css">
 
 
   <style>
@@ -48,8 +48,11 @@
         </div>
       </a>
       <ul class="dropdown-menu">
-        <li><a role="menuitem" tabindex="0" data-target="#modalSplash" data-toggle="modal" aria-haspopup="true">About</a><a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a></li>
+        <li><a role="button" tabindex="0" data-target="#modalSplash" data-toggle="modal" aria-haspopup="true">About</a></li>
         <li><a role="menuitem" tabindex="0" data-target="#panelLayers" aria-haspopup="true"><span class="glyphicon glyphicon glyphicon-th-list"></span> Layers</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelLegend" aria-haspopup="true"><span class="glyphicon glyphicon-education"></span> Legend</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelAlarms" aria-haspopup="true"><span class="glyphicon glyphicon-warning-sign"></span> Alarms</a></li>
+
         <li><a class="visible-xs" role="button" data-target="#panelSearch" aria-haspopup="true"><span class="glyphicon glyphicon-search"></span> Search</a></li>
         <li><a role="menuitem" tabindex="0" data-target="#panelBasemaps" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span> Basemaps</a></li>
         <li><a role="menuitem" tabindex="0" id="calciteToggleNavbar" aria-haspopup="true"><span class="glyphicon glyphicon-fullscreen"></span> Full Map</a></li>
@@ -63,25 +66,13 @@
     </div>
      <!-- Nav -->
     <ul class="calcite-nav nav navbar-nav">                    
-      <li><div class="calcite-navbar-search calcite-search-expander"><div id="searchNavDiv"></div></div></li>
+      <li><div class="calcite-navbar-search hidden-xs"><div id="searchNavDiv"></div></div></li>
     </ul>
  
   </nav><!--/.navbar -->
 
  
-<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Modal header</h3>
-  </div>
-  <div class="modal-body">
-    <p>One fine body…</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
-</div>
+
 
 
   <!-- Modal Window -->
@@ -117,28 +108,71 @@
 
   <div class="calcite-map">
     <div id="mapViewDiv" class="calcite-map-absolute"></div>
+    <div class="calcite-panels calcite-panels-right calcite-bg-custom calcite-text-dark " role="tablist" aria-multiselectable="true">
+    <!-- Legend Panel -->
+  
+    <div id="panelLegend" class="panel">
+      <div id="headingInfo" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLegend"  aria-expanded="true" aria-controls="collapseInfo"><span class="glyphicon glyphicon-education" aria-hidden="true"></span><span class="panel-label">Legend</span></a> 
+          <!--<a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelLegend"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a> --> 
+        </div>
+      </div>
+      <div id="collapseLegend" class="panel-collapse" role="tabpanel" aria-labelledby="headingInfo">
+        <div class="panel-body">
+          <p>This Part is Legend</p>
+          
+        </div>
+      </div>
+    </div>
+</div>
 
   </div><!-- /.container -->
 
+ 
+
+
+
+ <div class="calcite-panels calcite-panels-left calcite-bg-light calcite-text-dark panel-group" role="tablist" aria-multiselectable="true">
+   
+    
+  
+
+    
+  </div>
   <!-- Panel -->
 
-  <div class="calcite-panels calcite-panels-right calcite-bg-light calcite-text-dark panel-group" role="tablist" aria-multiselectable="true">
+  <div class="calcite-panels calcite-panels-left calcite-bg-light calcite-text-dark panel-group" role="tablist"  aria-multiselectable="false">
           
     <!-- Layers Info Panel -->
   
-    <div id="panelLayers" class="panel collapse">
+    <div id="panelLayers" class="panel collapse in">
       <div id="headingLayers" class="panel-heading" role="tab">
         <div class="panel-title">
           <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLayers"  aria-expanded="true" aria-controls="collapseLayers"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><span class="panel-label">Layers</span></a> 
           <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelLayers"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
         </div>
       </div>
-      <div id="collapseLayers" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInfo">
+      <div id="collapseLayers" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
         <div id="layersDiv" class="panel-body">
-          
-          
         </div>
       </div>
+    </div>
+
+    <!-- Alarm Panel -->
+    <div id="panelAlarms" class="panel collapse in">
+      <div id="headingInfo" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseAlarms"  aria-expanded="true" aria-controls="collapseInfo"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span><span class="panel-label">Alarms</span></a> 
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelAlarms"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+        </div>
+      </div>
+      <div id="collapseAlarms" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
+        <div class="panel-body">
+          <p>This Part is Alarm</p>
+        </div>
+      </div>
+    </div>
     </div>
   
     <!-- Search Panel -->
