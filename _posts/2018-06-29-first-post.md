@@ -2,7 +2,6 @@
 layout: post
 title: First post!
 subtitle: 做大数据，学区块链
-image: /img/hello_world.jpeg
 tags: [明明什么都没做就已经系列]
 ---
 
