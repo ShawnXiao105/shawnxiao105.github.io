@@ -23,6 +23,7 @@ evolutionary architecture必须要考虑三个方面：incremental change(增量
 
 一个项目架构除了软件需求这一特征之外，还有审计，数据，安全，性能，合法性和可扩展性等特征。随着业务需求的不断演进，每一个特征都需要利用fitness function来保证每个特性的完整性。
 
+![Entire Architectural Scope](/img/20180814/entire_architectural_scope.png)
 
  > Organization which design systems... are constrained to produce designs which are copies of the communication structures of these organizations.
  >    --Melvin Conway
