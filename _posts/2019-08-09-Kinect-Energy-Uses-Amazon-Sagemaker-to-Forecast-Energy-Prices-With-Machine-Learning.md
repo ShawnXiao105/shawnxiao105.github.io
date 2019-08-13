@@ -1,11 +1,8 @@
 ---
 layout: post
 title: Kinect Energy利用机器学习并使用Amazon SageMaker去预测能源价格
-image: /img/SageMaker.jpg
 tags: [Artificial Intelligence, SageMaker, AWS Machine Learning, 翻译]
 ---
-
-本文为翻译，原文章地址[按这里](https://aws.amazon.com/cn/blogs/machine-learning/kinect-energy-uses-amazon-sagemaker-to-forecast-energy-prices-with-machine-learning/)
 
 [Amazon ML 解决方案实验室](https://aws.amazon.com/ml-solutions-lab/)最近与 [Kinect Energy](https://www.kinectenergy.com/en) 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 [Amazon SageMaker](https://aws.amazon.com/sagemaker/) 和 [AWS Step Functions](https://aws.amazon.com/sagemaker/)创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。
 
@@ -305,3 +302,6 @@ Amazon SageMaker SDK 库允许我们访问和调用经过训练的 ML 模型,但
 我们在 Amazon SageMaker 平台中构建、训练和测试了 DeepAR 预测模型来预测电力现货价格。 Amazon SageMaker 推理管道整合了预处理、特征工程和模型输出步骤。单个 Amazon SageMaker 批量转换作业就可以将模型投入生产并生成推理。这些推理现在帮助 Kinect Energy 公司对现货价格做出更准确的预测,并提高其电价交易能力。
 
 Amazon ML 解决方案实验室提供的模型开箱即用。同时我们也有机会在数据科学实践方面培训 Kinect Energy 团队，方便他们能够维护、迭代和改进在机器学习方面的 工作。他们可以利用目前资源扩展到未来其他的用例。
+
+
+本文为翻译，原文章地址[按这里](https://aws.amazon.com/cn/blogs/machine-learning/kinect-energy-uses-amazon-sagemaker-to-forecast-energy-prices-with-machine-learning/)

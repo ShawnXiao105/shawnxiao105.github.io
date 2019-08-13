@@ -64,7 +64,7 @@
   
 
    
-  <meta property="og:description" content="本文为翻译，原文章地址按这里 Amazon ML 解决方案实验室最近与 Kinect Energy 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 Amazon SageMaker 和 AWS Step Functions创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。 最特别的是这个流程利用了Amazon SageMaker DeepAR 预测算法。 使用全新的深度学习预测模型去替换当前手工流程，我们不仅节约时间，还推动Kinect Energy内部一致使用数据驱动方法论。 下图显示了端到端的解决方案 编排一个step function来实现数据抽取流程，即每天加载和处理数据，并将数据存入Amazon S3 数据湖。 之后数据传入Amazon SageMaker，系统通过Batch Transform调用去触发执行推理模型管道服务来生成推理 (Inference). 项目动机 自然能源市场依赖一系列产品来满足市场需求，如风能、水利发电、核能、煤以及石油天然气。真正决定各个能源所占市场比列取决于当天各个能源的市场价格。这个价格取决于那天的电力需求。投资者可以在公开市场竞价交易电力。 Kinect Energy 向客户买卖能源，其商业模式中重要的一部分涉及交易能源价格衍生的金融合同。 这需要对能源价格进行准确的预测。 Kinect Energy 希望通过使用 ML 来改进和自动化预测过程(以前是手动完成的)。现货价格是当前商品价格,而不是未来或远期执行价格, 即商品在将来交割时可以买入或卖出的价格。通过比较预测的现货价格和远期执行价格，Kinect Energy团队有机会根据当下的预测对冲未来价格变动。 数据需求 在此解决方案中我们希望预测以小时为间隔的未来四周的现货价格。项目面临的主要挑战之一是搭建一个系统来自动收集和处理所需的数据。该管道服务需要以下两种数据： 历史现货价格 能源生产和消费率以及其他影响现货价格的外部因素 （我们将生产和消费率称为外部数据。） 为了构建一个强大的预测模型,我们必须收集足够的历史数据来训练模型,最好是跨越多年的数据。我们还不得不每天在市场产生新信息时更新数据。该模型还需要能够访问放置预测后的结果数据的外部数据源。 供应商每天将每小时现货价格更新到外部数据馈送。多家实体提供生产和消费率的数据, 并且发布数据的时间周期也各有不同。 Kinect...">
+  <meta property="og:description" content="Amazon ML 解决方案实验室最近与 Kinect Energy 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 Amazon SageMaker 和 AWS Step Functions创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。 最特别的是这个流程利用了Amazon SageMaker DeepAR 预测算法。 使用全新的深度学习预测模型去替换当前手工流程，我们不仅节约时间，还推动Kinect Energy内部一致使用数据驱动方法论。 下图显示了端到端的解决方案 编排一个step function来实现数据抽取流程，即每天加载和处理数据，并将数据存入Amazon S3 数据湖。 之后数据传入Amazon SageMaker，系统通过Batch Transform调用去触发执行推理模型管道服务来生成推理 (Inference). 项目动机 自然能源市场依赖一系列产品来满足市场需求，如风能、水利发电、核能、煤以及石油天然气。真正决定各个能源所占市场比列取决于当天各个能源的市场价格。这个价格取决于那天的电力需求。投资者可以在公开市场竞价交易电力。 Kinect Energy 向客户买卖能源，其商业模式中重要的一部分涉及交易能源价格衍生的金融合同。 这需要对能源价格进行准确的预测。 Kinect Energy 希望通过使用 ML 来改进和自动化预测过程(以前是手动完成的)。现货价格是当前商品价格,而不是未来或远期执行价格, 即商品在将来交割时可以买入或卖出的价格。通过比较预测的现货价格和远期执行价格，Kinect Energy团队有机会根据当下的预测对冲未来价格变动。 数据需求 在此解决方案中我们希望预测以小时为间隔的未来四周的现货价格。项目面临的主要挑战之一是搭建一个系统来自动收集和处理所需的数据。该管道服务需要以下两种数据： 历史现货价格 能源生产和消费率以及其他影响现货价格的外部因素 （我们将生产和消费率称为外部数据。） 为了构建一个强大的预测模型,我们必须收集足够的历史数据来训练模型,最好是跨越多年的数据。我们还不得不每天在市场产生新信息时更新数据。该模型还需要能够访问放置预测后的结果数据的外部数据源。 供应商每天将每小时现货价格更新到外部数据馈送。多家实体提供生产和消费率的数据, 并且发布数据的时间周期也各有不同。 Kinect Energy...">
   
 
 
@@ -90,7 +90,7 @@
   
 
   
-  <meta name="twitter:description" content="本文为翻译，原文章地址按这里 Amazon ML 解决方案实验室最近与 Kinect Energy 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 Amazon SageMaker 和 AWS Step Functions创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。 最特别的是这个流程利用了Amazon SageMaker DeepAR 预测算法。 使用全新的深度学习预测模型去替换当前手工流程，我们不仅节约时间，还推动Kinect Energy内部一致使用数据驱动方法论。 下图显示了端到端的解决方案 编排一个step function来实现数据抽取流程，即每天加载和处理数据，并将数据存入Amazon S3 数据湖。 之后数据传入Amazon SageMaker，系统通过Batch Transform调用去触发执行推理模型管道服务来生成推理 (Inference). 项目动机 自然能源市场依赖一系列产品来满足市场需求，如风能、水利发电、核能、煤以及石油天然气。真正决定各个能源所占市场比列取决于当天各个能源的市场价格。这个价格取决于那天的电力需求。投资者可以在公开市场竞价交易电力。 Kinect Energy 向客户买卖能源，其商业模式中重要的一部分涉及交易能源价格衍生的金融合同。 这需要对能源价格进行准确的预测。 Kinect Energy 希望通过使用 ML 来改进和自动化预测过程(以前是手动完成的)。现货价格是当前商品价格,而不是未来或远期执行价格, 即商品在将来交割时可以买入或卖出的价格。通过比较预测的现货价格和远期执行价格，Kinect Energy团队有机会根据当下的预测对冲未来价格变动。 数据需求 在此解决方案中我们希望预测以小时为间隔的未来四周的现货价格。项目面临的主要挑战之一是搭建一个系统来自动收集和处理所需的数据。该管道服务需要以下两种数据： 历史现货价格 能源生产和消费率以及其他影响现货价格的外部因素 （我们将生产和消费率称为外部数据。） 为了构建一个强大的预测模型,我们必须收集足够的历史数据来训练模型,最好是跨越多年的数据。我们还不得不每天在市场产生新信息时更新数据。该模型还需要能够访问放置预测后的结果数据的外部数据源。 供应商每天将每小时现货价格更新到外部数据馈送。多家实体提供生产和消费率的数据, 并且发布数据的时间周期也各有不同。 Kinect...">
+  <meta name="twitter:description" content="Amazon ML 解决方案实验室最近与 Kinect Energy 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 Amazon SageMaker 和 AWS Step Functions创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。 最特别的是这个流程利用了Amazon SageMaker DeepAR 预测算法。 使用全新的深度学习预测模型去替换当前手工流程，我们不仅节约时间，还推动Kinect Energy内部一致使用数据驱动方法论。 下图显示了端到端的解决方案 编排一个step function来实现数据抽取流程，即每天加载和处理数据，并将数据存入Amazon S3 数据湖。 之后数据传入Amazon SageMaker，系统通过Batch Transform调用去触发执行推理模型管道服务来生成推理 (Inference). 项目动机 自然能源市场依赖一系列产品来满足市场需求，如风能、水利发电、核能、煤以及石油天然气。真正决定各个能源所占市场比列取决于当天各个能源的市场价格。这个价格取决于那天的电力需求。投资者可以在公开市场竞价交易电力。 Kinect Energy 向客户买卖能源，其商业模式中重要的一部分涉及交易能源价格衍生的金融合同。 这需要对能源价格进行准确的预测。 Kinect Energy 希望通过使用 ML 来改进和自动化预测过程(以前是手动完成的)。现货价格是当前商品价格,而不是未来或远期执行价格, 即商品在将来交割时可以买入或卖出的价格。通过比较预测的现货价格和远期执行价格，Kinect Energy团队有机会根据当下的预测对冲未来价格变动。 数据需求 在此解决方案中我们希望预测以小时为间隔的未来四周的现货价格。项目面临的主要挑战之一是搭建一个系统来自动收集和处理所需的数据。该管道服务需要以下两种数据： 历史现货价格 能源生产和消费率以及其他影响现货价格的外部因素 （我们将生产和消费率称为外部数据。） 为了构建一个强大的预测模型,我们必须收集足够的历史数据来训练模型,最好是跨越多年的数据。我们还不得不每天在市场产生新信息时更新数据。该模型还需要能够访问放置预测后的结果数据的外部数据源。 供应商每天将每小时现货价格更新到外部数据馈送。多家实体提供生产和消费率的数据, 并且发布数据的时间周期也各有不同。 Kinect Energy...">
   
 
   
@@ -134,8 +134,8 @@
 	
 	<div class="avatar-container">
 	  <div class="avatar-img-border">
-	    <a href="http://localhost:4000">
-	      <img class="avatar-img" src="/img/SageMaker.jpg" />
+	    <a href="http://localhost:4000 ">
+	      <img class="avatar-img" src="/img/avatar-icon.jpeg" />
 		</a>
 	  </div>
 	</div>
@@ -181,9 +181,7 @@
       
 
       <article role="main" class="blog-post">
-        <p>本文为翻译，原文章地址<a href="https://aws.amazon.com/cn/blogs/machine-learning/kinect-energy-uses-amazon-sagemaker-to-forecast-energy-prices-with-machine-learning/">按这里</a></p>
-
-<p><a href="https://aws.amazon.com/ml-solutions-lab/">Amazon ML 解决方案实验室</a>最近与 <a href="https://www.kinectenergy.com/en">Kinect Energy</a> 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 <a href="https://aws.amazon.com/sagemaker/">Amazon SageMaker</a> 和 <a href="https://aws.amazon.com/sagemaker/">AWS Step Functions</a>创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。</p>
+        <p><a href="https://aws.amazon.com/ml-solutions-lab/">Amazon ML 解决方案实验室</a>最近与 <a href="https://www.kinectenergy.com/en">Kinect Energy</a> 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 <a href="https://aws.amazon.com/sagemaker/">Amazon SageMaker</a> 和 <a href="https://aws.amazon.com/sagemaker/">AWS Step Functions</a>创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。</p>
 
 <p>最特别的是这个流程利用了<a href="https://docs.aws.amazon.com/sagemaker/latest/dg/deepar.html">Amazon SageMaker DeepAR</a> 预测算法。 使用全新的深度学习预测模型去替换当前手工流程，我们不仅节约时间，还推动Kinect Energy内部一致使用数据驱动方法论。</p>
 
@@ -494,6 +492,8 @@ ret = sagemaker.create_transform_job(**batch_params)
 <p>我们在 Amazon SageMaker 平台中构建、训练和测试了 DeepAR 预测模型来预测电力现货价格。 Amazon SageMaker 推理管道整合了预处理、特征工程和模型输出步骤。单个 Amazon SageMaker 批量转换作业就可以将模型投入生产并生成推理。这些推理现在帮助 Kinect Energy 公司对现货价格做出更准确的预测,并提高其电价交易能力。</p>
 
 <p>Amazon ML 解决方案实验室提供的模型开箱即用。同时我们也有机会在数据科学实践方面培训 Kinect Energy 团队，方便他们能够维护、迭代和改进在机器学习方面的 工作。他们可以利用目前资源扩展到未来其他的用例。</p>
+
+<p>本文为翻译，原文章地址<a href="https://aws.amazon.com/cn/blogs/machine-learning/kinect-energy-uses-amazon-sagemaker-to-forecast-energy-prices-with-machine-learning/">按这里</a></p>
 
       </article>
 
