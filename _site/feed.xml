@@ -7,6 +7,65 @@
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Kinect Energy利用机器学习并使用Amazon SageMaker去预测能源价格</title>
+        <description>
+          
+          本文为翻译，原文章地址按这里 Amazon ML 解决方案实验室最近与 Kinect Energy 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 Amazon SageMaker 和 AWS Step Functions创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。 最特别的是这个流程利用了Amazon SageMaker DeepAR 预测算法。 使用全新的深度学习预测模型去替换当前手工流程，我们不仅节约时间，还推动Kinect Energy内部一致使用数据驱动方法论。 下图显示了端到端的解决方案 编排一个step function来实现数据抽取流程，即每天加载和处理数据，并将数据存入Amazon S3 数据湖。 之后数据传入Amazon SageMaker，系统通过Batch Transform调用去触发执行推理模型管道服务来生成推理 (Inference). 项目动机 自然能源市场依赖一系列产品来满足市场需求，如风能、水利发电、核能、煤以及石油天然气。真正决定各个能源所占市场比列取决于当天各个能源的市场价格。这个价格取决于那天的电力需求。投资者可以在公开市场竞价交易电力。 Kinect Energy 向客户买卖能源，其商业模式中重要的一部分涉及交易能源价格衍生的金融合同。 这需要对能源价格进行准确的预测。 Kinect Energy 希望通过使用 ML 来改进和自动化预测过程(以前是手动完成的)。现货价格是当前商品价格,而不是未来或远期执行价格, 即商品在将来交割时可以买入或卖出的价格。通过比较预测的现货价格和远期执行价格，Kinect Energy团队有机会根据当下的预测对冲未来价格变动。 数据需求 在此解决方案中我们希望预测以小时为间隔的未来四周的现货价格。项目面临的主要挑战之一是搭建一个系统来自动收集和处理所需的数据。该管道服务需要以下两种数据： 历史现货价格 能源生产和消费率以及其他影响现货价格的外部因素 （我们将生产和消费率称为外部数据。） 为了构建一个强大的预测模型,我们必须收集足够的历史数据来训练模型,最好是跨越多年的数据。我们还不得不每天在市场产生新信息时更新数据。该模型还需要能够访问放置预测后的结果数据的外部数据源。 供应商每天将每小时现货价格更新到外部数据馈送。多家实体提供生产和消费率的数据, 并且发布数据的时间周期也各有不同。 Kinect...
+        </description>
+        <pubDate>Fri, 09 Aug 2019 00:00:00 -0700</pubDate>
+        <link>http://localhost:4000/2019-08-09-Kinect-Energy-Uses-Amazon-Sagemaker-to-Forecast-Energy-Prices-With-Machine-Learning/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019-08-09-Kinect-Energy-Uses-Amazon-Sagemaker-to-Forecast-Energy-Prices-With-Machine-Learning/</guid>
+      </item>
+    
+      <item>
+        <title>Building Evolutionary Architectures Reading Note I</title>
+        <description>
+          Software Architecture - 
+          evolutionary architecture必须要考虑三个方面：incremental change(增量变化)，fitness function（适应度函数，也可以理解为书中所述的guided change），第三个方面是appropriate coupling（适当的耦合）。 以前我一直认为incremental change只是开发上的事情，其实它也包含团队如何部署这一部分。开发就是指如何让开发人员可以更容易的做增量变化，部署就是指要考虑模块的层级以及对于业务逻辑特性的结偶，并将他们对应的设计好的架构上去。这也是为什么要做DevOps的原因。 第二个方面是Guided Change，作者借用了算法里fitness function概念来描述如何不让evolutinary architecture降级。可以想象一个好的evolutinary architecture由很多特性组成，当有新的变化元素，比如业务需求新功能，加到现有的系统里的时候，我们需要一个机制来防止随着时间推移这些变化影响到这些重要特性。 除了技术架构（Techncal）之外，架构还应该考虑其他维度。作者列出了四种常见的四个维度： Technical 架构实现部分，比如Frameworks，依赖的包以及需要实现功能所对应的编程语言 Data Database Schemas， table layourts， 优化等等。DBA架构师需要解决这方面的架构问题 Security 定义安全策略，安全指引以及找到对应的工具帮助发现系统的缺陷 Operational/System 这方面主要考虑的是如何将架构对应到现有的硬件和虚拟机基础设施：比如服务器，集群，交换机和云资源等等 一个项目架构除了软件需求这一特征之外，还有审计，数据，安全，性能，合法性和可扩展性等特征。随着业务需求的不断演进，每一个特征都需要利用fitness function来保证每个特性的完整性。 Organization which design systems… are constrained to produce designs which are copies of the communication structures of these organizations. –Melvin Conway 作者提到了Conway‘s...
+        </description>
+        <pubDate>Tue, 14 Aug 2018 00:00:00 -0700</pubDate>
+        <link>http://localhost:4000/2018-08-14-Building-Evolutionary-Architectures-Reading-Note1/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018-08-14-Building-Evolutionary-Architectures-Reading-Note1/</guid>
+      </item>
+    
+      <item>
+        <title>2018半年总结</title>
+        <description>
+          在ICT培训之后 - 
+          1月了解了什么是比特币，以太坊，EOS。对于以太坊的智能合约技术尤其感兴趣。
+
+2月学习智能合约开发，学会Solidity，Remix，Truffle，web3，metamask，自己开发区块链小应用。为了上线，学会用Godaddy，CloudFlare，Google Cloud，gitPages，Google Analysis。
+
+3月基本每周末参加不同的Hacker马拉松和开发者活动。发现前端知识远远不足，看es5，es6，对javascript有了重新的认识，学VUE，用VUE开发前端。
+
+4月一次周末线下Hacker活动，听大神说去中心化交易协议。学0x protocol，solc，研究各种侧链技术。了解别人是怎么用CI/CD管理开发上线产品。
+
+5月开始研究Relayer，为了看懂Relayer层学Typescript，顺便跳坑React+Typescript以及各种React中间件。期间每周四晚跑去科大旁听区块链课程，弄懂一些理论知识，比如零知识证明
+
+6月阅读开源项目源代码之时，发现微服务无处不在，开始重新理解微服务概念。但也发现微服务并非无所不能，只是一种方法论，需要大量大量代码和项目积累。学GO，用GO扩展Redis消息队列来用做自己微服务中间件。
+
+7月发现Java后端转Node后端异常痛苦，某大神表示非常理解并安利一款阿里产品EGGjs，用过之后发现清爽简单，适合长期投资。
+
+这就是半年来，下班之后干的与技术相关的事情。
+
+感受是
+
+  新技术，新概念，新想法看似新，要落地还是需要旧技术。
+  这是个资本为王的时代，讲故事的能力是获得资本的首要能力。
+  commitment是相互合作的基础
+  赚钱真的真的很重要，有钱才能做自己想做的项目
+
+
+下半年心态放平稳一点，多写点技术文章，平时遇到的问题都总结出来。
+
+
+        </description>
+        <pubDate>Sun, 05 Aug 2018 00:00:00 -0700</pubDate>
+        <link>http://localhost:4000/2018-08-05-half-year-summary/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018-08-05-half-year-summary/</guid>
+      </item>
+    
+      <item>
         <title>First post!</title>
         <description>
           做大数据，学区块链 - 
