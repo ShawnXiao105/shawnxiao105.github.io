@@ -14,16 +14,16 @@ baseurl: "https://shawnxiao105.github.io"
 # Of course don't forget to change the username and projectname to YOUR username and project
 
 # Name of website
-title: 大羊的世界
+title: 大羊学AI
 
 # Short description of your site
-description: awesome big data world!
+# description: 
 
 # --- Navigation bar options --- #
 
 # List of links in the navigation bar
 navbar-links:
-  #About Me: "aboutme"
+  About Me: "aboutme"
   #Resources:
    # - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
    # - Learn markdown: "http://www.markdowntutorial.com/"
@@ -64,7 +64,7 @@ footer-link-col: "#404040"
 # Change all these values or delete the ones you don't want.
 # Important: you must keep the "name" parameter, everything else you can remove
 author:
-  name: 大羊
+  name: shawnxiao105
 
 # Select your active Social Network Links.
 # Uncomment the links you want to show in the footer and add your information to each link.
@@ -142,7 +142,7 @@ title-separator: "-"
 # --- Don't need to touch anything below here (but you can if you want) --- #
 
 # Output options (more information on Jekyll's site)
-timezone: "America/Vancouver"
+timezone: "Hongkong"
 markdown: kramdown
 highlighter: rouge
 permalink: /:year-:month-:day-:title/

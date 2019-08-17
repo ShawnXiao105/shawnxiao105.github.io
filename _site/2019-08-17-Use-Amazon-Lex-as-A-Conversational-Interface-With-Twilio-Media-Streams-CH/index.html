@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>用Amazon Lex搭建Twilio媒体流的对话界面</title>
+
+  <meta name="author" content="shawnxiao105" />
+
+  
+
+  <link rel="alternate" type="application/rss+xml" title="大羊学AI - " href="/feed.xml" />
+
+  
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T7HRBRG');</script>
+    <!-- End Google Tag Manager -->
+
+
+  
+    
+      
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/css/main.css" />
+    
+  
+
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+  
+
+  
+
+  
+
+    <!-- Facebook OpenGraph tags -->
+  
+
+  
+  <meta property="og:title" content="用Amazon Lex搭建Twilio媒体流的对话界面" />
+  
+
+   
+  <meta property="og:description" content="企业使用 Twilio 平台构建与客户沟通的新方式：无论是通过对话式交互式语音响应 (IVR) 完全自动化餐厅点餐，还是构建下一代高级客服联系中心。 随着 Media Streams的推出，Twilio 开启了他们自己的语音平台，该平台可以赋能企业实时访问电话的原始音频流。 用户可以用Media Streams来提高呼叫中心的生产力，通过Amazon Transcribe Streaming WebSockets实时翻译对话，自动化终端交互，最后用Amazon分析来访者的语音意图并给客服一些推荐。 在这篇文章里，我们向你展示如何用 Amazon Lex 以及Twilio Media Streams提供的原始音频流数据把聊天对话界面(聊天机器人)整合到你的语音应用里去。 Lex 使用深度学习来完成识别人类语音意图所需的繁重工作，以便客户可以轻松地构建愉悦的用户体验和逼真的对话。 解决方案遵循以下步骤: 从 Twilio 接收音频流 将音频流发送到语音活动检测组件,以确定音频中的是否有语音 检测到语音后,开始将用户数据流式传输到 Amazon Lex 检测到静音时,停止将用户数据流式传输到 Amazon Lex 根据Amazon Lex 的响应更新Twilio正在进行的呼叫 本示例中提供的语音活动检测 (VAD) 实现仅用于参考/演示目的,使用的是通过查看振幅来检测语音和静音的入门方法，不建议用于生产。您需要根据在生产场景中的使用需求来实现更强大可靠的 VAD 模块。 下图描述了步骤: 以下将提供 Amazon Lex Bot 与 Twilio Voice Stream...">
+  
+
+
+  <meta property="og:type" content="website" />
+
+  
+  <meta property="og:url" content="http://localhost:4000/2019-08-17-Use-Amazon-Lex-as-A-Conversational-Interface-With-Twilio-Media-Streams-CH/" />
+  <link rel="canonical" href="http://localhost:4000/2019-08-17-Use-Amazon-Lex-as-A-Conversational-Interface-With-Twilio-Media-Streams-CH/" />
+  
+
+  
+  <meta property="og:image" content="http://localhost:4000/img/avatar-icon.jpeg" />
+  
+
+
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@" />
+  <meta name="twitter:creator" content="@" />
+
+  
+  <meta name="twitter:title" content="用Amazon Lex搭建Twilio媒体流的对话界面" />
+  
+
+  
+  <meta name="twitter:description" content="企业使用 Twilio 平台构建与客户沟通的新方式：无论是通过对话式交互式语音响应 (IVR) 完全自动化餐厅点餐，还是构建下一代高级客服联系中心。 随着 Media Streams的推出，Twilio 开启了他们自己的语音平台，该平台可以赋能企业实时访问电话的原始音频流。 用户可以用Media Streams来提高呼叫中心的生产力，通过Amazon Transcribe Streaming WebSockets实时翻译对话，自动化终端交互，最后用Amazon分析来访者的语音意图并给客服一些推荐。 在这篇文章里，我们向你展示如何用 Amazon Lex 以及Twilio Media Streams提供的原始音频流数据把聊天对话界面(聊天机器人)整合到你的语音应用里去。 Lex 使用深度学习来完成识别人类语音意图所需的繁重工作，以便客户可以轻松地构建愉悦的用户体验和逼真的对话。 解决方案遵循以下步骤: 从 Twilio 接收音频流 将音频流发送到语音活动检测组件,以确定音频中的是否有语音 检测到语音后,开始将用户数据流式传输到 Amazon Lex 检测到静音时,停止将用户数据流式传输到 Amazon Lex 根据Amazon Lex 的响应更新Twilio正在进行的呼叫 本示例中提供的语音活动检测 (VAD) 实现仅用于参考/演示目的,使用的是通过查看振幅来检测语音和静音的入门方法，不建议用于生产。您需要根据在生产场景中的使用需求来实现更强大可靠的 VAD 模块。 下图描述了步骤: 以下将提供 Amazon Lex Bot 与 Twilio Voice Stream...">
+  
+
+  
+  <meta name="twitter:image" content="http://localhost:4000/img/avatar-icon.jpeg" />
+  
+
+  
+
+</head>
+
+
+  <body>
+
+    
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T7HRBRG"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+        <a class="navbar-brand" href="http://localhost:4000">大羊学AI</a>
+      
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+
+
+
+
+
+
+<a href="/aboutme">About Me</a>
+
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+	    <a href="http://localhost:4000 ">
+	      <img class="avatar-img" src="/img/avatar-icon.jpeg" />
+		</a>
+	  </div>
+	</div>
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+
+<header class="header-section ">
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <h1>用Amazon Lex搭建Twilio媒体流的对话界面</h1>
+		  
+		  
+		  
+		  <span class="post-meta">Posted on August 17, 2019</span>
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+      
+
+      <article role="main" class="blog-post">
+        <p>企业使用 <a href="https://www.twilio.com/">Twilio</a> 平台构建与客户沟通的新方式：无论是通过对话式交互式语音响应 (IVR) 完全自动化餐厅点餐，还是构建下一代高级客服联系中心。 随着 <a href="https://www.twilio.com/media-streams">Media Streams</a>的推出，Twilio 开启了他们自己的语音平台，该平台可以赋能企业实时访问电话的原始音频流。</p>
+
+<p>用户可以用Media Streams来提高呼叫中心的生产力，通过<a href="https://aws.amazon.com/blogs/aws/amazon-transcribe-streaming-now-supports-websockets/">Amazon Transcribe Streaming WebSockets</a>实时翻译对话，自动化终端交互，最后用Amazon分析来访者的语音意图并给客服一些推荐。</p>
+
+<p>在这篇文章里，我们向你展示如何用 <a href="https://aws.amazon.com/lex/">Amazon Lex</a> 以及Twilio Media Streams提供的原始音频流数据把聊天对话界面(聊天机器人)整合到你的语音应用里去。 Lex 使用深度学习来完成识别人类语音意图所需的繁重工作，以便客户可以轻松地构建愉悦的用户体验和逼真的对话。</p>
+
+<p>解决方案遵循以下步骤:</p>
+
+<ul>
+  <li>从 Twilio 接收音频流</li>
+  <li>将音频流发送到语音活动检测组件,以确定音频中的是否有语音</li>
+  <li>检测到语音后,开始将用户数据流式传输到 Amazon Lex</li>
+  <li>检测到静音时,停止将用户数据流式传输到 Amazon Lex</li>
+  <li>根据Amazon Lex 的响应更新Twilio正在进行的呼叫</li>
+</ul>
+
+<p>本示例中提供的语音活动检测 (VAD) 实现仅用于参考/演示目的,使用的是通过查看振幅来检测语音和静音的入门方法，不建议用于生产。您需要根据在生产场景中的使用需求来实现更强大可靠的 VAD 模块。</p>
+
+<p>下图描述了步骤:</p>
+
+<p><img src="/img/lex-twilio/lex-twilio-1.gif" alt="lex-twilio-1" /></p>
+
+<p>以下将提供 Amazon Lex Bot 与 Twilio Voice Stream 集成的指导流程：</p>
+
+<ol>
+  <li>创建 Amazon Lex Bot</li>
+  <li>创建 Twilio 帐户和设置可编程语音</li>
+  <li>构建 Amazon Lex 和 Twilio 语音流集成代码并将其部署到亚马逊 ECS/Fargate</li>
+  <li>测试已部署的服务</li>
+  <li>(可选) 在本地生成和测试服务</li>
+</ol>
+
+<p>要构建和部署服务,需要以下先决条件:</p>
+
+<ul>
+  <li><a href="https://www.python.org/downloads/">Python</a>（用于构建服务的编程语言）</li>
+  <li><a href="https://www.docker.com/products/docker-desktop">Docker</a>（打包服务的部署工具）</li>
+  <li>已安装并配置 <a href="https://aws.amazon.com/cli/">AWS CLI</a>（用于创建所需的 AWS 服务并将服务部署到 AWS）。有关说明,请参阅配置 <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html#cli-quick-configuration">AWS CLI</a></li>
+</ul>
+
+<p>此外,您需要一个域名来托管您的服务，并且必须使用 <a href="https://console.aws.amazon.com/acm/home">Amazon Certificate Manager</a> 为域名注册 SSL 证书。 有关说明,请参阅<a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html">请求公共证书</a>。从控制台记录证书 ARN。</p>
+
+<p>需要 SSL 证书才能通过<strong>wss</strong>进行安全通信，<strong>wss</strong>是 Twilio 语音流使用的持久双向通信协议。<code class="highlighter-rouge">templates/streams.xml</code> 文件中的<Stream>指令允许您通过 WebSockets 实时接收原始音频流。成功连接后，您的服务将建立与 Twilio 服务的 WebSocket 连接，音频将开始流式传输。</Stream></p>
+
+<h2 id="第一步-创建-amazon-lex-bot">第一步： 创建 Amazon Lex Bot</h2>
+
+<p>如果您还没有Amazon Lex Bot，创建并部署一个。有关说明，请参阅<a href="https://docs.aws.amazon.com/lex/latest/dg/gs-bp.html">使用蓝图创建 Amazon Lex Bot（控制台）</a>。</p>
+
+<p>创建Bot后，部署Bot并创建别名。有关说明，请参阅<a href="https://docs.aws.amazon.com/lex/latest/dg/gettingstarted-ex3.html">发布版本和创建别名</a>。</p>
+
+<p>为了从服务调用 Amazon Lex API，您必须创建具有访问类型为”Programmatic access”的 IAM 用户并附加相应的策略。</p>
+
+<p>为此，在 AWS 控制台中，点击 <strong>IAM</strong>-&gt;<strong>Users</strong>-&gt;<strong>Add user</strong>。</p>
+
+<p>提供用户名，选择”Programmatic access”访问类型，然后单击”Next: Permissions”。</p>
+
+<p><img src="/img/lex-twilio/lex-twilio-2.gif" alt="lex-twilio-2" /></p>
+
+<p>使用”Attach existing policies directly”选项，筛选 Amazon Lex 策略并选择 AmazonLexReadOnly 和 AmazonLexRunBotsOnly 策略。</p>
+
+<p><img src="/img/lex-twilio/lex-twilio-3.gif" alt="lex-twilio-3" /></p>
+
+<p>单击以下页面中的”Next: Tags”、”Next: Review”和”Create User”以创建用户。记录访问密钥 ID 和机密访问密钥。我们在部署栈期间使用这些凭据。</p>
+
+<h2 id="第二步创建-twilio-帐户和设置可编程语音">第二步：创建 Twilio 帐户和设置可编程语音</h2>
+
+<p>注册 Twilio 帐户并创建可编程语音项目。 有关注册说明，请参阅https://www.twilio.com/console。</p>
+
+<p>记录”<strong>AUTH TOKEN</strong>“。您可以在 Twilio 仪表板
+Setting&gt;General-&gt;API Credentials 下找到此信息。</p>
+
+<p>您还必须通过添加用于拨打 Twilio 电话号码的电话号码来验证呼叫者 ID。您可以通过单击  Verify caller ID 页上的按钮 <img src="/img/lex-twilio/red-button.png" alt="red-button.png" />来执行此操作</p>
+
+<h2 id="第三步构建-amazon-lex-和-twilio-语音流集成代码并将其部署到亚马逊-ecsfargate">第三步：构建 Amazon Lex 和 Twilio 语音流集成代码并将其部署到亚马逊 ECS/Fargate</h2>
+
+<p>在本节中，我们使用 AWS Fargate 创建一个新服务来托管集成代码。 <a href="https://aws.amazon.com/fargate/">AWS Fargate</a> 是 <a href="https://aws.amazon.com/ecs/">Amazon 弹性容器服务</a>(ECS)中的一个部署选项，允许您部署容器，而无需担心配置或扩展服务器。对于我们的服务，我们在应用程序负载平衡器 （ALB） 后面的 Docker 容器中使用 Python 和 <a href="https://palletsprojects.com/p/flask/">Flask</a>。</p>
+
+<h3 id="部署核心基础设施">部署核心基础设施</h3>
+<p>作为创建基础设施的第一步，我们使用CloudFormation Template部署核心基础设施，如 VPC、Subnets、安全组、ALB、ECS 集群和 IAM 策略。</p>
+
+<p>单击下面的”Launch Stack”按钮，即可进入 AWS CloudFormation Stack 创建页面。单击”下一步”并填写参数。请注意，稍后我们启动基础架构之上的服务的过程中使用相同的”EnvironmentName”参数。这允许我们引用此部署的堆栈输出。</p>
+
+<p><a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=lex-twiliovoice-core&amp;templateURL=https://aws-ml-blog.s3.amazonaws.com/artifacts/lex-twilio/coreinfra_cfn.yml"><img src="/img/lex-twilio/launchstack.png" alt="Launch Stack" /></a></p>
+
+<p>堆栈创建完成后，从”Output”选项卡中记录”ExternalUrl”键的值。</p>
+
+<h3 id="将代码打包并部署到aws">将代码打包并部署到AWS</h3>
+<p>为了将代码部署到 Amazon ECS，我们将代码打包到 Docker 容器中，并将 Docker 映像上载到 Amazon 弹性容器注册表 （ECR）。</p>
+
+<p>服务的代码可在下面的 GitHub repository中找到。请克隆存储库到本地计算机上。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/veerathp/lex-twiliovoice.git
+cd lex-twiliovoice
+</code></pre></div></div>
+
+<p>接下来，我们将更新 <code class="highlighter-rouge">templates/streams.xml</code> 中 Streams 元素的 URL属性，以匹配在先决条件部分中配置SSL证书的那个服务的DNS名称。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Stream url="wss://&lt;Your DNS&gt;/"&gt;&lt;/Stream&gt;
+</code></pre></div></div>
+
+<p>现在运行下面命令，使用 Dockerfile 生成容器映像。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build -t lex-twiliovoice .
+</code></pre></div></div>
+
+<p>接下来，我们使用 AWS CLI 传入存储库名称的值来创建容器注册表。从输出中记录”repositoryUri”。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws ecr create-repository --repository-name &lt;repository name&gt;
+</code></pre></div></div>
+
+<p>为了将容器映像推送到注册表，我们必须进行身份验证。运行以下命令：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws ecr get-login --region us-west-2 --no-include-email
+</code></pre></div></div>
+
+<p>执行上述命令的输出以完成身份验证过程。</p>
+
+<p>接下来，我们将容器镜像标记并推送到 ECR。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag lex-twiliovoice &lt;repositoryUri&gt;/lex-twiliovoice:latest
+docker push &lt;repositoryUri&gt;/lex-twiliovoice:latest
+</code></pre></div></div>
+
+<p>现在，我们使用 CloudFormation Template部署其余的基础架构。作为此堆栈的一部分，我们部署组件，如 ECS Service,，ALB Target groups， HTTP/HTTPS Listener rules 和 Fargate Task。使用task definition properties将环境变量注入容器。</p>
+
+<p>由于我们在我们的服务使用 WebSocket 连接，我们需要启用负载均衡（使用目标组属性）的粘性，以便与同一实例保持持久连接。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      ….
+      ….
+      TargetGroupAttributes:
+        - Key: stickiness.enabled
+          Value: true
+        …
+</code></pre></div></div>
+
+<p>单击下面的”Launch Stack”按钮，即可进入 AWS CloudFormation Stack创建页面。单击”Next”并填写从上述步骤中收集的以下参数的正确值：IAMAccessKeyId, IAMSecretAccessKey, ImageUrl, LexBotName, LexBotAlias, and TwilioAuthToken。其他所有参数您可以使用默认值。请确保使用和上一个堆栈部署相同”EnvironmentName”，因为我们要引用部署的输出。</p>
+
+<p><a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=lex-twiliovoice-service&amp;templateURL=https://aws-ml-blog.s3.amazonaws.com/artifacts/lex-twilio/serviceinfra_cfn.yml"><img src="/img/lex-twilio/launchstack.png" alt="Launch Stack" /></a></p>
+
+<p>部署完成后，我们可以测试服务。但是，在执行此操作之前，请确保将自定义 DNS 指向应用程序负载平衡器 URL。</p>
+
+<p>为此，我们在 Route 53 Hosted Zones 下创建一个”A Record”，将自定义 DNS 指向作为核心基础架构堆栈部署一部分的 ALB Url（输出中的”ExternalUrl”密钥）。在”Create Record Set”页面中，名称字段使用 DNS 名称，type 选”A + IPv4 address”，Alias字段选择”Yes”， Alias target同ALB Url，然后单击”Create”。</p>
+
+<h2 id="第四步测试已部署的服务">第四步：测试已部署的服务</h2>
+
+<p>您可以通过导航到 <a href="https://console.aws.amazon.com/ecs/home">Amazon ECS Console</a>并单击群集名称来验证部署。您可以在”Services”选项卡下看到 AWS Fargate 服务，在”tasks”选项卡下看到正在运行的任务。</p>
+
+<p><img src="/img/lex-twilio/lex-twilio-4.gif" alt="lex-twilio-4" /></p>
+
+<p>为了测试服务，首先我们使用在 AWS 中运行中的服务的 URL（http://<url>/twiml）更新 Twilio 控制台中"Voice &amp; Fax" 部分下的 Webhook URL 字段。您现在可以拨打 Twilio 电话号码来联系Lex Bot。确保使用 Twilio 控制台验证过号码拨打。连接后，您会听到提示"您将与 Lex Bot连接，3，2，1 GO"，这个提示语是在 `templates/streams.xml` 文件中配置的。您现在就可以与Amazon Lex Bot互动啦！</url></p>
+
+<p>您可以使用”CloudWatch Log Groups” 监控服务，并解决服务运行时可能出现的任何问题。</p>
+
+<p><img src="/img/lex-twilio/lex-twilio-5.gif" alt="lex-twilio-5" /></p>
+
+<h2 id="第五步可选-在本地生成和测试服务">第五步：(可选) 在本地生成和测试服务</h2>
+
+<p>现在，服务已经部署和测试，您可能对在本地构建和测试代码有兴趣。为此，打开克隆到本地计算机上的 GitHub 存储库，并使用以下命令安装所有依赖项：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install -r requirements.txt
+</code></pre></div></div>
+
+<p>您可以通过安装”ngrok”在本地测试服务。有关详细信息，请参阅https://ngrok.com/download。此工具可以用一个公有URL暴露本地 Web 服务器。使用它，您就可以测试 Twilio Webhook 集成了。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ngrok http 8080
+</code></pre></div></div>
+
+<p><img src="/img/lex-twilio/lex-twilio-6.gif" alt="lex-twilio-6" /></p>
+
+<p>接下来，使用正确的 ngrok url 在 <code class="highlighter-rouge">templates/streams.xml</code> 文件中配置”Stream”元素。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Stream url="wss://&lt;xxxxxxxx.ngrok.io&gt;/"&gt;&lt;/Stream&gt;
+</code></pre></div></div>
+
+<p>此外，我们还需要配置代码中使用的环境变量。在为环境变量提供适当的值后，运行以下命令：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export AWS_REGION=us-west-2
+export ACCESS_KEY_ID=&lt;Your IAM User Access key ID from Step 1&gt;
+export SECRET_ACCESS_KEY=&lt;Your IAM User Secret Access key from Step 1&gt;
+export LEX_BOT_NAME=&lt;Bot name for the Lex Bot you created in Step 1&gt;
+export LEX_BOT_ALIAS=&lt;Bot Alias for the Lex Bot you created in Step 1&gt;
+export TWILIO_AUTH_TOKEN=&lt;Twilio AUTH TOKEN from Step 2&gt;
+export CONTAINER_PORT=8080
+export URL=&lt;http://xxxxxxxx.ngrok.io&gt; (update with the appropriate url from ngrok)
+</code></pre></div></div>
+
+<p>设置变量后，可以使用以下命令启动服务：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python server.py
+</code></pre></div></div>
+
+<p>要进行测试，请使用正确的 URL（http://<url>/twiml）在 Twilio 控制台中的"Voice &amp; Fax"下配置 Webhook 字段，如下所示。</url></p>
+
+<p><img src="/img/lex-twilio/lex-twilio-7.gif" alt="lex-twilio-7" /></p>
+
+<p>从已验证的电话发起对 Twilio 电话号码的呼叫。连接后，您会听到提示”您将与 Lex Bot连接，3，2，1 GO”，这个提示语是在 <code class="highlighter-rouge">templates/streams.xml</code> 文件中配置的。现在，您可以与您在步骤 1 中创建的 Amazon Lex Bot交互啦。</p>
+
+<p>在本博客文章中，我们展示了如何使用 <a href="https://aws.amazon.com/lex/">Amazon Lex</a> 将聊天机器人集成到您的语音应用程序中。要了解如何使用 Amazon Lex 构建更多资源，请查看<a href="https://aws.amazon.com/lex/resources/">开发人员资源</a>。</p>
+
+<p>本文为翻译，原文章地址<a href="[https://aws.amazon.com/cn/blogs/machine-learning/use-amazon-lex-as-a-conversational-interface-with-twilio-media-streams/](https://aws.amazon.com/cn/blogs/machine-learning/use-amazon-lex-as-a-conversational-interface-with-twilio-media-streams/)">按这里</a></p>
+
+      </article>
+
+      
+        <div class="blog-tags">
+          Tags:
+          
+          
+            <a href="/tags#Artificial Intelligence">Artificial Intelligence</a>
+          
+            <a href="/tags#Amazon Lex">Amazon Lex</a>
+          
+            <a href="/tags#AWS Machine Learning">AWS Machine Learning</a>
+          
+            <a href="/tags#翻译">翻译</a>
+          
+          
+        </div>
+      
+
+      
+        <!-- Check if any share-links are active -->
+
+
+
+
+<section id = "social-share-section">
+  <span class="sr-only">Share: </span>
+
+  
+  <!--- Share on Twitter -->
+    <a href="https://twitter.com/intent/tweet?text=%E7%94%A8Amazon+Lex%E6%90%AD%E5%BB%BATwilio%E5%AA%92%E4%BD%93%E6%B5%81%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%95%8C%E9%9D%A2+http://localhost:4000/2019-08-17-Use-Amazon-Lex-as-A-Conversational-Interface-With-Twilio-Media-Streams-CH/"
+      class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      <span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  
+
+  
+  <!--- Share on Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019-08-17-Use-Amazon-Lex-as-A-Conversational-Interface-With-Twilio-Media-Streams-CH/"
+      class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      <span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      <span class="sr-only">Facebook</span>
+    </a>
+  
+
+  
+
+  
+  <!--- Share on LinkedIn -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/2019-08-17-Use-Amazon-Lex-as-A-Conversational-Interface-With-Twilio-Media-Streams-CH/"
+      class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      <span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  
+
+</section>
+
+
+
+      
+
+      <ul class="pager blog-pager">
+        
+        <li class="previous">
+          <a href="/2019-08-09-Kinect-Energy-Uses-Amazon-Sagemaker-to-Forecast-Energy-Prices-With-Machine-Learning/" data-toggle="tooltip" data-placement="top" title="Kinect Energy利用机器学习并使用Amazon SageMaker去预测能源价格">&larr; Previous Post</a>
+        </li>
+        
+        
+      </ul>
+
+      
+        <div class="disqus-comments">
+          
+        </div>
+          
+      
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links"><li><a href="/feed.xml" title="RSS"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">RSS</span>
+              </a>
+            </li><li><a href="mailto:shawnxiao105@gmail.com" title="Email me"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Email me</span>
+              </a>
+            </li><li><a href="https://github.com/shawnxiao105" title="GitHub"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">GitHub</span>
+              </a>
+            </li><li><a href="https://twitter.com/shawnxiao105" title="Twitter"><span class="fa-stack fa-lg" aria-hidden="true">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="sr-only">Twitter</span>
+              </a>
+            </li></ul>
+      <p class="copyright text-muted">
+      shawnxiao105
+      &nbsp;&bull;&nbsp;
+      2019
+
+      
+      &nbsp;&bull;&nbsp;
+      <a href="http://localhost:4000">shawnxiao105</a>
+      
+
+      
+      </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/js/main.js"></script>
+    
+  
+
+
+
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-121656431-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+	<!-- End Google Analytics -->
+
+
+  
+  </body>
+</html>

@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>大羊的世界</title>
-    <description>awesome big data world!</description>
+    <title>大羊学AI</title>
+    <description></description>
     <link>http://localhost:4000</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>用Amazon Lex搭建Twilio媒体流的对话界面</title>
+        <description>
+          
+          企业使用 Twilio 平台构建与客户沟通的新方式：无论是通过对话式交互式语音响应 (IVR) 完全自动化餐厅点餐，还是构建下一代高级客服联系中心。 随着 Media Streams的推出，Twilio 开启了他们自己的语音平台，该平台可以赋能企业实时访问电话的原始音频流。 用户可以用Media Streams来提高呼叫中心的生产力，通过Amazon Transcribe Streaming WebSockets实时翻译对话，自动化终端交互，最后用Amazon分析来访者的语音意图并给客服一些推荐。 在这篇文章里，我们向你展示如何用 Amazon Lex 以及Twilio Media Streams提供的原始音频流数据把聊天对话界面(聊天机器人)整合到你的语音应用里去。 Lex 使用深度学习来完成识别人类语音意图所需的繁重工作，以便客户可以轻松地构建愉悦的用户体验和逼真的对话。 解决方案遵循以下步骤: 从 Twilio 接收音频流 将音频流发送到语音活动检测组件,以确定音频中的是否有语音 检测到语音后,开始将用户数据流式传输到 Amazon Lex 检测到静音时,停止将用户数据流式传输到 Amazon Lex 根据Amazon Lex 的响应更新Twilio正在进行的呼叫 本示例中提供的语音活动检测 (VAD) 实现仅用于参考/演示目的,使用的是通过查看振幅来检测语音和静音的入门方法，不建议用于生产。您需要根据在生产场景中的使用需求来实现更强大可靠的 VAD 模块。 下图描述了步骤: 以下将提供 Amazon Lex Bot 与 Twilio Voice Stream...
+        </description>
+        <pubDate>Sat, 17 Aug 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019-08-17-Use-Amazon-Lex-as-A-Conversational-Interface-With-Twilio-Media-Streams-CH/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019-08-17-Use-Amazon-Lex-as-A-Conversational-Interface-With-Twilio-Media-Streams-CH/</guid>
+      </item>
     
       <item>
         <title>Kinect Energy利用机器学习并使用Amazon SageMaker去预测能源价格</title>
@@ -12,7 +23,7 @@
           
           Amazon ML 解决方案实验室最近与 Kinect Energy 一起合作构建了一个管道服务，用机器学习预测能源未来价格。我们使用 Amazon SageMaker 和 AWS Step Functions创建自动化的数据抽取和数据推理的管道服务，该服务可以自动调度去预测能源价格。 最特别的是这个流程利用了Amazon SageMaker DeepAR 预测算法。 使用全新的深度学习预测模型去替换当前手工流程，我们不仅节约时间，还推动Kinect Energy内部一致使用数据驱动方法论。 下图显示了端到端的解决方案 编排一个step function来实现数据抽取流程，即每天加载和处理数据，并将数据存入Amazon S3 数据湖。 之后数据传入Amazon SageMaker，系统通过Batch Transform调用去触发执行推理模型管道服务来生成推理 (Inference). 项目动机 自然能源市场依赖一系列产品来满足市场需求，如风能、水利发电、核能、煤以及石油天然气。真正决定各个能源所占市场比列取决于当天各个能源的市场价格。这个价格取决于那天的电力需求。投资者可以在公开市场竞价交易电力。 Kinect Energy 向客户买卖能源，其商业模式中重要的一部分涉及交易能源价格衍生的金融合同。 这需要对能源价格进行准确的预测。 Kinect Energy 希望通过使用 ML 来改进和自动化预测过程(以前是手动完成的)。现货价格是当前商品价格,而不是未来或远期执行价格, 即商品在将来交割时可以买入或卖出的价格。通过比较预测的现货价格和远期执行价格，Kinect Energy团队有机会根据当下的预测对冲未来价格变动。 数据需求 在此解决方案中我们希望预测以小时为间隔的未来四周的现货价格。项目面临的主要挑战之一是搭建一个系统来自动收集和处理所需的数据。该管道服务需要以下两种数据： 历史现货价格 能源生产和消费率以及其他影响现货价格的外部因素 （我们将生产和消费率称为外部数据。） 为了构建一个强大的预测模型,我们必须收集足够的历史数据来训练模型,最好是跨越多年的数据。我们还不得不每天在市场产生新信息时更新数据。该模型还需要能够访问放置预测后的结果数据的外部数据源。 供应商每天将每小时现货价格更新到外部数据馈送。多家实体提供生产和消费率的数据, 并且发布数据的时间周期也各有不同。 Kinect Energy...
         </description>
-        <pubDate>Fri, 09 Aug 2019 00:00:00 -0700</pubDate>
+        <pubDate>Fri, 09 Aug 2019 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2019-08-09-Kinect-Energy-Uses-Amazon-Sagemaker-to-Forecast-Energy-Prices-With-Machine-Learning/</link>
         <guid isPermaLink="true">http://localhost:4000/2019-08-09-Kinect-Energy-Uses-Amazon-Sagemaker-to-Forecast-Energy-Prices-With-Machine-Learning/</guid>
       </item>
@@ -23,7 +34,7 @@
           Software Architecture - 
           evolutionary architecture必须要考虑三个方面：incremental change(增量变化)，fitness function（适应度函数，也可以理解为书中所述的guided change），第三个方面是appropriate coupling（适当的耦合）。 以前我一直认为incremental change只是开发上的事情，其实它也包含团队如何部署这一部分。开发就是指如何让开发人员可以更容易的做增量变化，部署就是指要考虑模块的层级以及对于业务逻辑特性的结偶，并将他们对应的设计好的架构上去。这也是为什么要做DevOps的原因。 第二个方面是Guided Change，作者借用了算法里fitness function概念来描述如何不让evolutinary architecture降级。可以想象一个好的evolutinary architecture由很多特性组成，当有新的变化元素，比如业务需求新功能，加到现有的系统里的时候，我们需要一个机制来防止随着时间推移这些变化影响到这些重要特性。 除了技术架构（Techncal）之外，架构还应该考虑其他维度。作者列出了四种常见的四个维度： Technical 架构实现部分，比如Frameworks，依赖的包以及需要实现功能所对应的编程语言 Data Database Schemas， table layourts， 优化等等。DBA架构师需要解决这方面的架构问题 Security 定义安全策略，安全指引以及找到对应的工具帮助发现系统的缺陷 Operational/System 这方面主要考虑的是如何将架构对应到现有的硬件和虚拟机基础设施：比如服务器，集群，交换机和云资源等等 一个项目架构除了软件需求这一特征之外，还有审计，数据，安全，性能，合法性和可扩展性等特征。随着业务需求的不断演进，每一个特征都需要利用fitness function来保证每个特性的完整性。 Organization which design systems… are constrained to produce designs which are copies of the communication structures of these organizations. –Melvin Conway 作者提到了Conway‘s...
         </description>
-        <pubDate>Tue, 14 Aug 2018 00:00:00 -0700</pubDate>
+        <pubDate>Tue, 14 Aug 2018 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2018-08-14-Building-Evolutionary-Architectures-Reading-Note1/</link>
         <guid isPermaLink="true">http://localhost:4000/2018-08-14-Building-Evolutionary-Architectures-Reading-Note1/</guid>
       </item>
@@ -60,7 +71,7 @@
 
 
         </description>
-        <pubDate>Sun, 05 Aug 2018 00:00:00 -0700</pubDate>
+        <pubDate>Sun, 05 Aug 2018 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2018-08-05-half-year-summary/</link>
         <guid isPermaLink="true">http://localhost:4000/2018-08-05-half-year-summary/</guid>
       </item>
@@ -77,7 +88,7 @@
 
 
         </description>
-        <pubDate>Fri, 29 Jun 2018 00:00:00 -0700</pubDate>
+        <pubDate>Fri, 29 Jun 2018 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2018-06-29-first-post/</link>
         <guid isPermaLink="true">http://localhost:4000/2018-06-29-first-post/</guid>
       </item>
