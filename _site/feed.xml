@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>大羊学AI</title>
-    <description></description>
+    <title>大羊de学习空间</title>
+    <description>ML-BigData-DR</description>
     <link>http://localhost:4000</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>人工智能概述笔记</title>
+        <description>
+          
+          目录 什么是人工智能 数据挖掘 机器学习 机器学习是什么 机器学习的概念： 问题类型 机器学习的概念： 训练和推理 机器学习算法类别 深度学习 云计算 机器学习 - 其他 数据科学工作流程 AI领域关键角色和技能 人工智能产业发展情况 产业图 目前人工智能领域存在问题 什么是人工智能 提到人工智能，经常提到数据挖掘，机器学习，深度学习，云计算和人工智能。他们到底是什么。 数据挖掘 数据挖掘： 识别出巨量数据中有效的、新颖的、潜在有用的、最终可理解的模式的非平凡过程 简言之： 从海量数据中找出有用的知识。 1989年8月，第11届国际人工智能联合会议在美国底特律举行，GTE实验室组织了一个名为“在数据库中发现知识” （knowledge discovery in database，KDD）的研讨会，数据挖掘成为一个领域的标志。 数据挖掘的定义分为广义的和狭义的。 广义的数据挖掘视为KDD的同义词，广义的数据挖掘也包括数据分析的含义。 狭义的数据挖掘视为KDD过程的一个步骤（建模）。 机器学习 机器学习是什么 A computer program is said to learn from experience E with respect to...
+        </description>
+        <pubDate>Tue, 20 Aug 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019-08-20-Maching-Learning-Deep-Learning-Brief-Notes/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019-08-20-Maching-Learning-Deep-Learning-Brief-Notes/</guid>
+      </item>
     
       <item>
         <title>用Amazon Lex搭建Twilio媒体流的对话界面</title>
